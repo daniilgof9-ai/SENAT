@@ -905,20 +905,17 @@ def handle_disconnect():
 
 # ============ ЗАПУСК ============
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
     print('=' * 60)
-    print('🚀 SENAT MESSENGER v10.0 - НОВЫЕ ФИЧИ')
+    print('🚀 SENAT MESSENGER v10.0 - НА RENDER')
     print('=' * 60)
     print(f'📊 Пользователей: {len(users_db)}')
     print(f'👥 Групп: {len(groups_db)}')
     print(f'👑 Админ: SENATOR')
     print('=' * 60)
-    print('✅ НОВОЕ:')
-    print('   - Админ может удалять любые сообщения')
-    print('   - Кнопка "Сохранить" для файлов')
-    print('   - Очистка чата ИСПРАВЛЕНА')
-    print('=' * 60)
-    print('📱 Сервер на http://localhost:5000')
+    print(f'📱 Сервер запущен на порту {port}')
     print('=' * 60)
     
-
+    socketio.run(app, host='0.0.0.0', port=port, debug=False)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+
