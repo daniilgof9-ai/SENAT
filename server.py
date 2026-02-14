@@ -1,4 +1,4 @@
-from flask import Flask, send_file, request, jsonify
+from flask import Flask, send_file, request, jsonify, session
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 import json
 import os
@@ -9,7 +9,17 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'senator_secret_key_2026'
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# ВАЖНО: Настройка для Render
+socketio = SocketIO(
+    app, 
+    cors_allowed_origins="*",
+    manage_session=False,  # Отключаем управление сессиями
+    logger=True,           # Включаем логи для отладки
+    engineio_logger=True,  # Логи EngineIO
+    ping_timeout=60,       # Таймаут пинга
+    ping_interval=25       # Интервал пинга
+)
 
 # ============ МАРШРУТ ============
 @app.route('/')
@@ -84,7 +94,6 @@ def broadcast_user_list():
                 'last_seen': users_db[u].get('last_seen', '')
             })
     emit('user_list', user_list, broadcast=True)
-
 def get_all_users(current_user):
     users = []
     for username in users_db:
@@ -917,5 +926,3 @@ if __name__ == '__main__':
     print('=' * 60)
     
     socketio.run(app, host='0.0.0.0', port=port, debug=False)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
-
