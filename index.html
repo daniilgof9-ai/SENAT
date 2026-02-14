@@ -1013,7 +1013,7 @@
     </div>
 
     <script>
-        const socket = io();
+        const socket = io();  // ← ВОТ ЭТА СТРОЧКА!
         let currentRoom = 'general';
         let currentChatType = 'global';
         let currentPrivateUser = '';
@@ -2171,4 +2171,5 @@
         });
     </script>
 </body>
+
 </html>
